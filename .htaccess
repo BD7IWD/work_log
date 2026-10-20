@@ -1,0 +1,32 @@
+# ===================================================================
+#  工作留痕记录 · Apache 配置
+#
+#  作用：让上传大文件（手机视频）在本机 Wamp 上立即生效，
+#        无需重启 Apache。
+#
+#  注意：
+#   · 本节只在 Apache + mod_php 下有效（本机 Wamp 即此模式）。
+#   · 宝塔一般是 Nginx + PHP-FPM，不读 .htaccess，
+#     需要在「网站 → 设置 → 配置文件」或 php.ini 里改，见「部署说明.md」第 5 步。
+#   · 若服务器是 Apache + PHP-FPM，php_value 会被忽略（不会报错，因为包在 IfModule 里）。
+# ===================================================================
+
+<IfModule mod_php7.c>
+    php_value upload_max_filesize 512M
+    php_value post_max_size 1024M
+    php_value max_execution_time 600
+    php_value max_input_time 600
+</IfModule>
+
+<IfModule mod_php.c>
+    php_value upload_max_filesize 512M
+    php_value post_max_size 1024M
+    php_value max_execution_time 600
+    php_value max_input_time 600
+</IfModule>
+
+# 禁止目录浏览
+Options -Indexes
+
+# 默认首页
+DirectoryIndex index.php index.html

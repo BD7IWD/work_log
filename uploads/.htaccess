@@ -1,0 +1,21 @@
+# 上传目录安全策略（Apache）
+# Nginx/宝塔 请改用 location 规则，见「部署说明.md」
+
+Options -Indexes
+
+# 禁止执行任何脚本（即使被绕过白名单上传了 .php）
+<FilesMatch "\.(php|php3|php4|php5|php7|phtml|phar|pht|cgi|pl|py|sh|asp|aspx|jsp)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# 兜底：把未知类型按下载处理
+<IfModule mod_mime.c>
+    RemoveHandler .php .phtml .phar
+    RemoveType .php .phtml .phar
+</IfModule>
